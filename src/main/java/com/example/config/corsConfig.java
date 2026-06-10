@@ -16,7 +16,8 @@ public class corsConfig {
                 registry.addMapping("/**")
                         .allowedOrigins("https://deployer-frontend-beta.vercel.app/",
                             "https://deployer-frontend-karthikgrsk-s-projects.vercel.app/",
-                            "http://localhost:5173/"
+                            "http://localhost:5173/",
+                            "*"
                         )
                         .allowedMethods("*");
             }
