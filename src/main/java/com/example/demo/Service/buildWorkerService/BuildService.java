@@ -24,7 +24,7 @@ public class BuildService {
 
         s3Download.downloadFolder(id);
 
-        File projectDir = new File("workspace/" + id);
+        File projectDir = new File("app/workspace/" + id);
         File nodeModules = new File(projectDir,"node_modules");
         //System.out.println("Line 28: Project dir: " + projectDir.getAbsolutePath());
 

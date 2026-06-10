@@ -1,5 +1,8 @@
 FROM eclipse-temurin:21
 
+RUN apt-get update && \
+    apt-get install -y nodejs npm git
+
 WORKDIR /app
 
 COPY . .
