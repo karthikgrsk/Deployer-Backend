@@ -32,9 +32,9 @@ public class RequestHandlerController {
             HttpServletRequest request) {
 
         try {
-            
-            String filePath = request.getRequestURI();
 
+            String filePath = request.getRequestURI();
+            
             String s3key = filePath.substring(1);
 
             System.out.println("Host = " + host);

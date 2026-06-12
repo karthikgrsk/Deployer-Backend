@@ -61,7 +61,7 @@ public class BuildService {
             // npm run build
             logger.info("Running npm run build in directory: {}", projectDir.getAbsolutePath());
 
-            ProcessBuilder build = new ProcessBuilder("npm", "run", "build");
+            ProcessBuilder build = new ProcessBuilder("npm", "run", "build", "--", "--base=/" + id + "/");
             build.directory(projectDir);
             build.inheritIO();
 
