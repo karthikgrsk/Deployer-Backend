@@ -29,15 +29,13 @@ public class RequestHandlerController {
 
     @GetMapping("/**")
     public ResponseEntity<byte[]> handleRequest(@RequestHeader("Host") String host,
-            HttpServletRequest path) {
+            HttpServletRequest request) {
 
         try {
+            
+            String filePath = request.getRequestURI();
 
-            String id = host.split("\\.")[0]; // gives it abc12
-
-            String filePath = path.getRequestURI();
-
-            String s3key = id + filePath;
+            String s3key = filePath.substring(1);
 
             System.out.println("Host = " + host);
             System.out.println("File Path = " + filePath);
