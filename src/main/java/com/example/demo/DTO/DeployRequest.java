@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 
 @Data
 public class DeployRequest{
-    @NotBlank(message = "repoUrl must not be blank")
-    private String repoUrl;
+
+    @NotBlank(message = "RepoURL must not be blank")
+    private String repourl;
 }

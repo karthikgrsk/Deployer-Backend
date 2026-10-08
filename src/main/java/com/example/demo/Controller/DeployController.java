@@ -42,7 +42,7 @@ public class DeployController {
 
         String filePath = "output/" + id;
 
-        GitService.cloneRepo(request.getRepoUrl(), filePath);
+        GitService.cloneRepo(request.getRepourl(), filePath);
 
         List<File> files = fService.readFiles(new File(filePath));
 
@@ -54,7 +54,12 @@ public class DeployController {
                 continue;
             }
 
-            String s3Key = file.getPath().replace("\\", "/");
+            String relativePath = file.getAbsolutePath()
+            .replace("\\", "/")
+            .replaceFirst("^.*?/output/" + id + "/", "");
+
+            String s3Key = id + "/" + relativePath;
+            
             System.out.println("Uploading: " + s3Key);
 
             s3Service.uploadFiles(s3Key, file);

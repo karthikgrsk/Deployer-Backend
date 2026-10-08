@@ -2,14 +2,16 @@ package com.example.demo.Service.buildWorkerService;
 
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnProperty(name = "app.worker.enabled", havingValue = "true")
 public class workerService implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(workerService.class);

@@ -30,38 +30,45 @@ public class s3DowloadService {
         System.out.println("Downloading files for:" + key);
 
         //creating localFolder so where it should be download folder
-        String localFolder = "workspace/"+ key;
+        String localFolder = "workspace/" + key;
 
         //if folder is missing create new folder
         Files.createDirectories(Paths.get(localFolder));
 
+        String prefix = key + "/";
         ListObjectsV2Request listrequest = ListObjectsV2Request.builder()
-                               .bucket(bucket)
-                               .prefix("output/" + key + "/")
+                               .bucket(bucket)         
+                               .prefix(prefix)
                                .build();
 
-        ListObjectsV2Response response  = s3Client.listObjectsV2(listrequest); 
-
+        ListObjectsV2Response response  = s3Client.listObjectsV2(listrequest);
 
         for (S3Object object : response.contents()) {
-            
-            String id = object.key();
+            String objectKey = object.key();
 
-            String relativePath = id.replace("output/" + key + "/", "");
+            if (objectKey.equals(prefix)) {
+                continue;
+            }
+
+            String relativePath = objectKey.startsWith(prefix)
+                    ? objectKey.substring(prefix.length())
+                    : objectKey.replaceFirst("^.*?/" + key + "/", "");
+
+            if (relativePath.isEmpty()) {
+                continue;
+            }
 
             //workspace/k23lb/src/app.jsx
-            Path destinationPath  = Paths.get(localFolder,relativePath);
+            Path destinationPath  = Paths.get(localFolder, relativePath);
 
             //create the missing folder
             Files.createDirectories(destinationPath.getParent());
 
-
             GetObjectRequest objectRequest = GetObjectRequest.builder()
                                                 .bucket(bucket)
-                                                .key(id)
+                                                .key(objectKey)
                                                 .build();
 
-                                                
             s3Client.getObject(
                 objectRequest,
                 ResponseTransformer.toFile(destinationPath)

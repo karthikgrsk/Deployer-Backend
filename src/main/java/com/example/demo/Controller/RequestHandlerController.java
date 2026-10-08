@@ -35,15 +35,39 @@ public class RequestHandlerController {
 
             String filePath = request.getRequestURI();
             
-            String s3key = filePath.substring(1);
+            
+            // Remove the first "/"
+            String path = filePath.substring(1);
+
+            // Split:
+            // ep6az/index.html
+            // ep6az/static/js/main.js
+            String[] parts = path.split("/", 2);
+
+            if (parts.length == 0) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // First part is deployment ID
+            String deploymentId = parts[0];
+
+            // Remaining part is file path
+            String objectPath = parts.length > 1
+                    ? parts[1]
+                    : "index.html";
+
+            // Create S3 key
+            String s3Key = deploymentId + "/" + objectPath;
 
             System.out.println("Host = " + host);
-            System.out.println("File Path = " + filePath);
-            System.out.println("S3 Key = " + s3key);
+            System.out.println("Request URI = " + filePath);
+            System.out.println("Deployment ID = " + deploymentId);
+            System.out.println("Object Path = " + objectPath);
+            System.out.println("S3 Key = " + s3Key);
 
             GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                     .bucket(bucket)
-                    .key(s3key)
+                    .key(s3Key)
                     .build();
 
             ResponseBytes<GetObjectResponse> s3ResponseBytes = s3Client.getObjectAsBytes(getObjectRequest);
